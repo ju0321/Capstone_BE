@@ -1,4 +1,4 @@
-package com.app.yeobaek_backend.global.common;
+package com.capstone.be.global.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

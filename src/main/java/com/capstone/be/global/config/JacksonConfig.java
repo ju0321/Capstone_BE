@@ -1,4 +1,4 @@
-package com.app.yeobaek_backend.global.config;
+package com.capstone.be.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -1,4 +1,4 @@
-package com.app.yeobaek_backend.global.config;
+package com.capstone.be.global.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

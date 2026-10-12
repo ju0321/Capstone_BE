@@ -1,4 +1,4 @@
-package com.app.yeobaek_backend.global.exception.model;
+package com.capstone.be.global.exception.model;
 
 import org.springframework.http.HttpStatus;
 

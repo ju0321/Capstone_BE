@@ -1,6 +1,6 @@
-package com.app.yeobaek_backend.global.health;
+package com.capstone.be.global.health;
 
-import com.app.yeobaek_backend.global.common.BaseResponse;
+import com.capstone.be.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

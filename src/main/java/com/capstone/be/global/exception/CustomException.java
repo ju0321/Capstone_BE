@@ -1,6 +1,6 @@
-package com.app.yeobaek_backend.global.exception;
+package com.capstone.be.global.exception;
 
-import com.app.yeobaek_backend.global.exception.model.BaseErrorCode;
+import com.capstone.be.global.exception.model.BaseErrorCode;
 import lombok.Getter;
 
 @Getter

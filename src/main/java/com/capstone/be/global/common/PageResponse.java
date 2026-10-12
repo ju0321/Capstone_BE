@@ -1,4 +1,4 @@
-package com.app.yeobaek_backend.global.common;
+package com.capstone.be.global.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

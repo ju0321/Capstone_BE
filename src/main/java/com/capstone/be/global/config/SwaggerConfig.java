@@ -1,4 +1,4 @@
-package com.app.yeobaek_backend.global.config;
+package com.capstone.be.global.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

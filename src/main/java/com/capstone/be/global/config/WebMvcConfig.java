@@ -1,4 +1,4 @@
-package com.app.yeobaek_backend.global.config;
+package com.capstone.be.global.config;
 
 import java.util.ArrayList;
 import java.util.List;
