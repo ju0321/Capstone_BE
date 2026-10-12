@@ -5,7 +5,6 @@ import com.capstone.be.domain.book.error.BookErrorCode;
 import com.capstone.be.domain.book.repository.SentenceRepository;
 import com.capstone.be.domain.book_sentences.dto.request.SentenceHighlightColorUpdateRequest;
 import com.capstone.be.domain.book_sentences.dto.request.SentenceHighlightCreateRequest;
-import com.capstone.be.domain.book_sentences.dto.request.SentenceHighlightMemoUpdateRequest;
 import com.capstone.be.domain.book_sentences.dto.response.SentenceHighlightListItemResponse;
 import com.capstone.be.domain.book_sentences.dto.response.SentenceHighlightResponse;
 import com.capstone.be.domain.book_sentences.entity.SentenceHighlight;
@@ -118,27 +117,11 @@ public class SentenceService {
     }
 
     /**
-     * 수집한 문장 하나의 상세보기. 책/페이지 컨텍스트 + 메모까지 함께 반환한다.
+     * 수집한 문장 하나의 상세보기. 책/페이지 컨텍스트까지 함께 반환한다.
      */
     @Transactional(readOnly = true)
     public SentenceHighlightListItemResponse getHighlightDetail(String authorizationHeader, Long sentenceId) {
         Long userId = resolveUserId(authorizationHeader);
-
-        return highlightRepository.findDetailByUserIdAndSentenceId(userId, sentenceId)
-                .map(this::toListItemResponse)
-                .orElseThrow(() -> new CustomException(HighlightErrorCode.HIGHLIGHT_NOT_FOUND));
-    }
-
-    /**
-     * 수집한 문장의 메모를 작성/수정한다. memo가 비어있으면(null/빈 문자열) 메모를 지운다.
-     */
-    @Transactional
-    public SentenceHighlightListItemResponse updateHighlightMemo(
-            String authorizationHeader, Long sentenceId, SentenceHighlightMemoUpdateRequest request) {
-        Long userId = resolveUserId(authorizationHeader);
-
-        getExistingHighlight(userId, sentenceId);
-        highlightRepository.updateMemo(userId, sentenceId, request.getMemo());
 
         return highlightRepository.findDetailByUserIdAndSentenceId(userId, sentenceId)
                 .map(this::toListItemResponse)
@@ -150,7 +133,6 @@ public class SentenceService {
                 .sentenceId(projection.getSentenceId())
                 .content(projection.getContent())
                 .color(HighlightColor.valueOf(projection.getColor()))
-                .memo(projection.getMemo())
                 .createdAt(projection.getCreatedAt())
                 .bookId(projection.getBookId())
                 .bookTitle(projection.getBookTitle())

@@ -16,8 +16,6 @@ public interface HighlightListProjection {
 
     String getColor();
 
-    String getMemo();
-
     LocalDateTime getCreatedAt();
 
     Long getBookId();

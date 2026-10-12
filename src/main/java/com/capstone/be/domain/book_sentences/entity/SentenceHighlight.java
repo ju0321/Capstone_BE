@@ -45,9 +45,6 @@ public class SentenceHighlight extends BaseTimeEntity {
     @Column(name = "color", nullable = false, length = 20)
     private HighlightColor color;
 
-    @Column(name = "memo", columnDefinition = "TEXT")
-    private String memo;
-
     @Builder
     public SentenceHighlight(Long userId, Long sentenceId, String content, HighlightColor color) {
         this.userId = userId;

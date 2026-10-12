@@ -24,9 +24,6 @@ public class SentenceHighlightListItemResponse {
     @Schema(description = "형광펜 색상", example = "YELLOW")
     private HighlightColor color;
 
-    @Schema(description = "메모", example = "이 문장 인상 깊었다")
-    private String memo;
-
     @Schema(description = "수집한 시각")
     private LocalDateTime createdAt;
 

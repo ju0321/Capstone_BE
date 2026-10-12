@@ -68,18 +68,6 @@ public interface HighlightRepository extends JpaRepository<SentenceHighlight, Lo
                       @Param("color") String color);
 
     /**
-     * 이미 있는 하이라이트에 메모를 남기거나 갱신한다. memo에 null/빈 문자열을 보내면 메모를 지운다.
-     * 존재 여부는 서비스에서 findByUserIdAndSentenceId()로 먼저 확인하고 호출한다.
-     */
-    @Modifying(clearAutomatically = true)
-    @Query(value = """
-            UPDATE highlights SET memo = :memo, updated_at = NOW()
-            WHERE user_id = :userId AND sentence_id = :sentenceId
-            """, nativeQuery = true)
-    void updateMemo(@Param("userId") Long userId, @Param("sentenceId") Long sentenceId,
-                     @Param("memo") String memo);
-
-    /**
      * 유저가 수집한 문장 목록을, 어느 책 몇 페이지의 문장인지까지 같이 조회한다(최신순).
      * highlights는 sentence_id만 갖고 있어서 sentences -> cutton_pages -> books를 조인해야
      * bookTitle/pageNumber를 알 수 있는데, SentenceHighlight 엔티티가 Sentence/Page/Book과
@@ -90,7 +78,6 @@ public interface HighlightRepository extends JpaRepository<SentenceHighlight, Lo
             SELECT h.sentence_id AS sentenceId,
                    h.content     AS content,
                    h.color       AS color,
-                   h.memo        AS memo,
                    h.created_at  AS createdAt,
                    b.book_id     AS bookId,
                    b.title       AS bookTitle,
@@ -107,12 +94,11 @@ public interface HighlightRepository extends JpaRepository<SentenceHighlight, Lo
             """, nativeQuery = true)
     List<HighlightListProjection> findAllByUserId(@Param("userId") Long userId, @Param("bookId") Long bookId);
 
-    /** 수집한 문장 하나의 상세보기(책/페이지 컨텍스트 + 메모 포함)를 조회한다. */
+    /** 수집한 문장 하나의 상세보기(책/페이지 컨텍스트 포함)를 조회한다. */
     @Query(value = """
             SELECT h.sentence_id AS sentenceId,
                    h.content     AS content,
                    h.color       AS color,
-                   h.memo        AS memo,
                    h.created_at  AS createdAt,
                    b.book_id     AS bookId,
                    b.title       AS bookTitle,

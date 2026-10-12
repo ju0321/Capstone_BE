@@ -2,7 +2,6 @@ package com.capstone.be.domain.book_sentences.controller;
 
 import com.capstone.be.domain.book_sentences.dto.request.SentenceHighlightColorUpdateRequest;
 import com.capstone.be.domain.book_sentences.dto.request.SentenceHighlightCreateRequest;
-import com.capstone.be.domain.book_sentences.dto.request.SentenceHighlightMemoUpdateRequest;
 import com.capstone.be.domain.book_sentences.dto.response.SentenceHighlightListItemResponse;
 import com.capstone.be.domain.book_sentences.dto.response.SentenceHighlightResponse;
 import com.capstone.be.domain.book_sentences.service.SentenceService;
@@ -57,25 +56,12 @@ public class SentenceController {
     @GetMapping("/{sentenceId}")
     @Operation(summary = "수집한 문장 상세보기",
             description = "로그인한 유저가 수집한 문장(sentenceId) 하나의 상세 정보를 조회합니다. "
-                    + "책/페이지 정보와 메모를 함께 반환합니다.")
+                    + "책/페이지 정보를 함께 반환합니다.")
     public ResponseEntity<BaseResponse<SentenceHighlightListItemResponse>> getHighlightDetail(
             @RequestHeader("Authorization") String authorization,
             @PathVariable Long sentenceId) {
         SentenceHighlightListItemResponse response = sentenceService.getHighlightDetail(authorization, sentenceId);
         return ResponseEntity.ok(BaseResponse.success(response));
-    }
-
-    @PatchMapping("/{sentenceId}/memo")
-    @Operation(summary = "메모 작성/수정하기",
-            description = "로그인한 유저가 수집한 문장(sentenceId)에 메모를 남기거나 수정합니다. "
-                    + "memo를 비워서 보내면 메모가 삭제됩니다.")
-    public ResponseEntity<BaseResponse<SentenceHighlightListItemResponse>> updateHighlightMemo(
-            @RequestHeader("Authorization") String authorization,
-            @PathVariable Long sentenceId,
-            @Valid @RequestBody SentenceHighlightMemoUpdateRequest request) {
-        SentenceHighlightListItemResponse response =
-                sentenceService.updateHighlightMemo(authorization, sentenceId, request);
-        return ResponseEntity.ok(BaseResponse.success("메모를 저장했습니다.", response));
     }
 
     @PatchMapping("/{sentenceId}")
