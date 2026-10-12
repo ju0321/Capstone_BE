@@ -4,6 +4,8 @@ import com.capstone.be.domain.book.entity.Page;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface PageRepository extends JpaRepository<Page, Long> {
 
@@ -19,6 +21,9 @@ public interface PageRepository extends JpaRepository<Page, Long> {
     /** 책의 마지막 페이지 - 완독 처리 시 last_page_id를 채울 때 쓴다. */
     Optional<Page> findFirstByBook_BookIdOrderByPageNumberDesc(Long bookId);
 
+    /** 책의 첫 페이지 - 도서 추가(등록) 시 last_page_id 초기값을 채울 때 쓴다. */
+    Optional<Page> findFirstByBook_BookIdOrderByPageNumberAsc(Long bookId);
+
     /** 책 한 권의 모든 페이지를 페이지 번호 순으로 가져온다. "책 전체 내용 가져오기" API에서 쓴다. */
     List<Page> findByBook_BookIdOrderByPageNumberAsc(Long bookId);
 
@@ -28,4 +33,12 @@ public interface PageRepository extends JpaRepository<Page, Long> {
      * 찾고(+ 존재 확인) 그 chapter를 읽어오는 용도로 쓴다.
      */
     Optional<Page> findByBook_BookIdAndPageNumber(Long bookId, Integer pageNumber);
+
+    /**
+     * 여러 책의 "마지막 페이지 번호(= 전체 페이지 수)"를 한 번에 조회한다.
+     * 내 도서 목록(getMyBooks())에서 책마다 allPage를 내려줄 때 N+1을 피하기 위해 쓴다.
+     */
+    @Query("SELECT p.book.bookId AS bookId, MAX(p.pageNumber) AS maxPageNumber "
+            + "FROM Page p WHERE p.book.bookId IN :bookIds GROUP BY p.book.bookId")
+    List<BookMaxPageNumberProjection> findMaxPageNumberByBookIds(@Param("bookIds") List<Long> bookIds);
 }
