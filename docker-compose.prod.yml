@@ -1,0 +1,50 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: capstone-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - capstone-net
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: capstone-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - capstone-net
+
+  redis:
+    image: redis:7
+    container_name: capstone-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - capstone-net
+
+networks:
+  capstone-net:
+
+volumes:
+  postgres_data:
+  redis_data:
